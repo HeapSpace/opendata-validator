@@ -21,3 +21,9 @@ Run validator:
 The validation takes some significant time!
 
 The validation result is saved in `./data/opendata_scores.json`
+
+## Update on Dockerhub
+
+```shell
+docker push h3apspac3/opendata-validator
+```

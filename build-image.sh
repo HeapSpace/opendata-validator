@@ -2,4 +2,4 @@
 
 ./gradlew clean assembleDist
 
-docker build . -f src/main/docker/Dockerfile -t heapspace/opendata-validator
+docker build . -f src/main/docker/Dockerfile -t h3apspac3/opendata-validator

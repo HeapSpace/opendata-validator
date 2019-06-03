@@ -2,4 +2,4 @@
 
 docker run --rm \
 	-v $(pwd)/data:/data \
-	heapspace/opendata-validator /data/opendata.json /data/opendata_scores.json
+	h3apspac3/opendata-validator /data/opendata.json /data/opendata_scores.json
