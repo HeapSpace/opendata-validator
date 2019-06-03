@@ -19,7 +19,6 @@ class ValidatorJob {
      */
     fun validate(database: Database): Map<String, Score> {
         log.info("Validation started")
-        var count = 0
 
         return runBlocking {
             database
@@ -34,11 +33,7 @@ class ValidatorJob {
                             { it }
                     )
                     .mapValues { Score(it.key, it.value) }
-                    .mapKeys {
-                        count++
-                        log.info("Resource done: ${it.key.resource.id} / $count")
-                        it.key.resource.id
-                    }
+                    .mapKeys { it.key.resource.id }
         }
     }
 
