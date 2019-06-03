@@ -2,12 +2,12 @@ package rs.opendata.validator.service.checks
 
 import jodd.io.FileUtil
 import jodd.json.JsonParser
-import jodd.lagarto.dom.LagartoDOMBuilder
 import jodd.log.LoggerFactory
 import jodd.util.CsvUtil
 import rs.opendata.validator.model.Format
 import rs.opendata.validator.model.Health
 import rs.opendata.validator.service.ResourceEx
+import rs.opendata.validator.xml.ValidatingLagartoDomBuilder
 
 class MachineReadCheck(rex: ResourceEx) : ResourceCheck(rex) {
 
@@ -63,8 +63,7 @@ class MachineReadCheck(rex: ResourceEx) : ResourceCheck(rex) {
         }
         val content = FileUtil.readString(data.file)
 
-        val parser = LagartoDOMBuilder().enableXmlMode()
-        parser.config.isCollectErrors = true
+        val parser = ValidatingLagartoDomBuilder().enableXmlMode()
 
         val dom = parser.parse(content)
         if (dom.errors.size > 0) {
