@@ -37,3 +37,6 @@ release.properties
 tmp
 
 opendata*.json
+build
+.gradle
+out

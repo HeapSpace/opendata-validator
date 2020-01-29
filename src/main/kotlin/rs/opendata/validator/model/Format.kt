@@ -12,6 +12,12 @@ enum class Format constructor(
     XML("xml", OPEN),
     XLSX("xlsx", OPEN),
     ODS("ods", OPEN),
+    SHP("shp", OPEN),
+    SHX("shx", OPEN),
+    DBF("dbf", OPEN),
+    KMZ("kmz", OPEN),
+    KML("kml", OPEN),
+    GPX("gpx", OPEN),
 
     TXT("txt", UNSTRUCTURED),
     ZIP("zip", UNSTRUCTURED),

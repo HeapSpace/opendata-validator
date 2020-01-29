@@ -1,5 +1,9 @@
 package rs.opendata.validator.service.checks
 
+import gov.nasa.worldwind.ogc.kml.KMLRoot
+import gov.nasa.worldwind.ogc.kml.io.KMLInputStream
+import gov.nasa.worldwind.ogc.kml.io.KMZInputStream
+import io.jenetics.jpx.GPX
 import jodd.io.FileUtil
 import jodd.json.JsonParser
 import jodd.log.LoggerFactory
@@ -8,6 +12,7 @@ import rs.opendata.validator.model.Format
 import rs.opendata.validator.model.Health
 import rs.opendata.validator.service.ResourceEx
 import rs.opendata.validator.xml.ValidatingLagartoDomBuilder
+import java.io.FileInputStream
 
 class MachineReadCheck(rex: ResourceEx) : ResourceCheck(rex) {
 
@@ -18,6 +23,9 @@ class MachineReadCheck(rex: ResourceEx) : ResourceCheck(rex) {
             Format.JSON -> runOrFail { testJson() }
             Format.CSV -> runOrFail { testCsv() }
             Format.XML -> runOrFail { testXml() }
+            Format.KMZ -> runOrFail { testKMZ() }
+            Format.KML -> runOrFail { testKML() }
+            Format.GPX -> runOrFail { testGPX() }
             else -> Health.LOW
         }
 
@@ -71,6 +79,53 @@ class MachineReadCheck(rex: ResourceEx) : ResourceCheck(rex) {
         }
 
         return Health.HIGH
+    }
+
+    private fun testKMZ(): Health {
+        val data = rex.download()
+        if (data.status >= 300) {
+            return Health.LOW
+        }
+        val inputStream = FileInputStream(data.file)
+        val kmlDoc = KMZInputStream(inputStream)
+        val kmlRoot = KMLRoot(kmlDoc);
+
+        return try {
+            kmlRoot.parse()
+            Health.HIGH
+        } catch (e: java.lang.Exception) {
+            Health.LOW
+        }
+    }
+
+    private fun testKML(): Health {
+        val data = rex.download()
+        if (data.status >= 300) {
+            return Health.LOW
+        }
+        val inputStream = FileInputStream(data.file)
+        val kmlDoc = KMLInputStream(inputStream, null)
+        val kmlRoot = KMLRoot(kmlDoc);
+
+        return try {
+            kmlRoot.parse()
+            Health.HIGH
+        } catch (e: java.lang.Exception) {
+            Health.LOW
+        }
+    }
+
+    private fun testGPX(): Health {
+        val data = rex.download()
+        if (data.status >= 300) {
+            return Health.LOW
+        }
+        return try {
+            GPX.read(FileInputStream(data.file)).tracks();
+            Health.HIGH
+        } catch (e: java.lang.Exception) {
+            Health.LOW
+        }
     }
 
     companion object {

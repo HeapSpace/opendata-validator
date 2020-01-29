@@ -15,7 +15,7 @@ class FormatAdapter : TypeJsonParser<Format> {
                     .values()
                     .first { format -> format.id().equals(string, ignoreCase = true) }
         } catch (nseex: NoSuchElementException) {
-            throw TypeConversionException(nseex)
+            throw TypeConversionException("Invalid format: $string")
         }
     }
 
